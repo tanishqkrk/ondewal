@@ -5,18 +5,42 @@ import useCore from "../src/context/CoreContext";
 import { MutatingDots } from "react-loader-spinner";
 import { useRouter } from "next/router";
 import Link from "next/link";
+// import { useNavigate } from 'react-router-dom';
 const Checkup = () => {
   const [isValidated, setIsValidated] = useState(false);
-  const [severity, setSeverity] = useState("low");
+  const [severity, setSeverity] = useState("");
   const [duration, setDuration] = useState("A few hours");
   const [frequency, setFrequency] = useState("All the time");
   const [prompt, setPrompt] = useState("");
   const [sum, setSum] = useState("");
+  // const [apiResponse, setApiResponse] = useState();
+  // const navigate = useNavigate();
+
+  // console.log(messageToSend);
+  // const options = {
+  //   method: "POST",
+  //   headers: {
+  //     Origin: "http://localhost:3000",
+  //     "Content-Type": "application/json",
+  //   },
+  //   credentials: "include",
+  //   body: JSON.stringify({
+  //     message: messageToSend,
+  //   }),
+  // };
   const { response, setResponse, loading, setLoading } = useCore();
+  //   const router = useRouter();
+  useEffect(() => {
+    if (severity !== "" && prompt !== "") {
+      setIsValidated(true);
+    } else {
+      setIsValidated(false);
+    }
+  }, [severity, prompt]);
 
   async function fetchResponse(msg) {
     const openai = new OpenAI({
-      apiKey: "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",
+      apiKey: "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",
       dangerouslyAllowBrowser: true,
     });
     const chatCompletion = await openai.chat.completions.create({
@@ -37,7 +61,7 @@ const Checkup = () => {
       sev: severity,
       duration: duration,
     };
-    console.table(checkupData);
+
     const messageToSend1 = `${checkupData.message} for the past ${
       checkupData.duration
     } and the problem is ${
@@ -109,9 +133,7 @@ const Checkup = () => {
               transition: ".7s ",
               zIndex: "99999",
             }}
-            onSubmit={() => {
-              validateForm;
-            }}
+            onSubmit={validateForm}
             className="bg-white rounded-md "
           >
             <div className="text-center text-2xl font-bold">
@@ -123,16 +145,12 @@ const Checkup = () => {
                 <div className="flex  justify-center items-end ">
                   <label>
                     <input
-                      onChange={() => {
-                        setSeverity("low");
-                        setIsValidated(true);
-                      }}
+                      onChange={() => setSeverity("low")}
                       className="hidden peer"
                       type="radio"
                       id="low"
                       name="pain"
                       value="low"
-                      checked={severity === "low" ? true : false}
                     />
                     <div
                       role={"button"}
@@ -143,16 +161,12 @@ const Checkup = () => {
                   </label>
                   <label>
                     <input
-                      onChange={() => {
-                        setSeverity("medium");
-                        setIsValidated(true);
-                      }}
+                      onChange={() => setSeverity("medium")}
                       className="hidden peer"
                       type="radio"
                       id="medium"
                       name="pain"
                       value="medium"
-                      checked={severity === "medium" ? true : false}
                     />
                     <div
                       role={"button"}
@@ -163,16 +177,12 @@ const Checkup = () => {
                   </label>
                   <label>
                     <input
-                      onChange={() => {
-                        setSeverity("high");
-                        setIsValidated(true);
-                      }}
+                      onChange={() => setSeverity("high")}
                       className="hidden peer"
                       type="radio"
                       id="high"
                       name="pain"
                       value="high"
-                      checked={severity === "high" ? true : false}
                     />
                     <div
                       role={"button"}
@@ -225,10 +235,7 @@ const Checkup = () => {
             </div> */}
               <div>
                 <textarea
-                  onChange={(e) => {
-                    setPrompt(e.target.value);
-                    setIsValidated(true);
-                  }}
+                  onChange={(e) => setPrompt(e.target.value)}
                   value={prompt}
                   placeholder="Describe in your own words, be as precise and descriptive as possible!"
                   name="prompt"
