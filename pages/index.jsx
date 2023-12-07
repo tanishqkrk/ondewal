@@ -5,7 +5,6 @@ import useCore from "../src/context/CoreContext";
 import { MutatingDots } from "react-loader-spinner";
 import { useRouter } from "next/router";
 import Link from "next/link";
-// import { useNavigate } from 'react-router-dom';
 const Checkup = () => {
   const [isValidated, setIsValidated] = useState(false);
   const [severity, setSeverity] = useState("low");
@@ -13,30 +12,7 @@ const Checkup = () => {
   const [frequency, setFrequency] = useState("All the time");
   const [prompt, setPrompt] = useState("");
   const [sum, setSum] = useState("");
-  // const [apiResponse, setApiResponse] = useState();
-  // const navigate = useNavigate();
-
-  // console.log(messageToSend);
-  // const options = {
-  //   method: "POST",
-  //   headers: {
-  //     Origin: "http://localhost:3000",
-  //     "Content-Type": "application/json",
-  //   },
-  //   credentials: "include",
-  //   body: JSON.stringify({
-  //     message: messageToSend,
-  //   }),
-  // };
   const { response, setResponse, loading, setLoading } = useCore();
-  //   const router = useRouter();
-  // useEffect(() => {
-  //   if (severity !== "" && prompt !== "") {
-  //     setIsValidated(true);
-  //   } else {
-  //     setIsValidated(false);
-  //   }
-  // }, [severity, prompt]);
 
   async function fetchResponse(msg) {
     const openai = new OpenAI({
@@ -133,7 +109,9 @@ const Checkup = () => {
               transition: ".7s ",
               zIndex: "99999",
             }}
-            onSubmit={validateForm}
+            onSubmit={() => {
+              validateForm;
+            }}
             className="bg-white rounded-md "
           >
             <div className="text-center text-2xl font-bold">
