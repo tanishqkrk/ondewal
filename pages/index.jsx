@@ -38,19 +38,19 @@ const Checkup = () => {
     }
   }, [severity, prompt]);
 
-  async function fetchResponse(msg) {
-    const openai = new OpenAI({
-      apiKey: "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",
-      dangerouslyAllowBrowser: true,
-    });
-    const chatCompletion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: msg }],
-      max_tokens: 500,
-    });
+  // async function fetchResponse(msg) {
+  //   const openai = new OpenAI({
+  //     apiKey: "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",
+  //     dangerouslyAllowBrowser: true,
+  //   });
+  //   const chatCompletion = await openai.chat.completions.create({
+  //     model: "gpt-3.5-turbo",
+  //     messages: [{ role: "user", content: msg }],
+  //     max_tokens: 500,
+  //   });
 
-    return chatCompletion.choices[0].message;
-  }
+  //   return chatCompletion.choices[0].message;
+  // }
   async function validateForm(e) {
     e.preventDefault();
     setLoading(true);
@@ -85,13 +85,38 @@ const Checkup = () => {
         : ""
     } What might be the causes? Add a ~ at the start of each point.`;
 
+    const remedies_options = {
+      method: "POST",
+      headers: {
+        Origin: "http://localhost:3000",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        message: messageToSend1,
+      }),
+    };
+    const causes_options = {
+      method: "POST",
+      headers: {
+        Origin: "http://localhost:3000",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        message: messageToSend2,
+      }),
+    };
+
     try {
-      const para = await fetchResponse(messageToSend2);
-      await setSum(para);
-      await setLoading(false);
-      const data = await fetchResponse(messageToSend1);
-      await setResponse(data);
+      const data = await fetch("/api/getRemedies", remedies_options);
       console.log(data);
+      // const para = await fetchResponse(messageToSend2);
+      // await setSum(para);
+      // await setLoading(false);
+      // const data = await fetchResponse(messageToSend1);
+      // await setResponse(data);
+      // console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -246,7 +271,7 @@ const Checkup = () => {
                 ></textarea>
               </div>
               <button
-                // disabled={!isValidated}
+                disabled={!isValidated}
                 className="p-3 bg-primary text-white rounded-lg w-full disabled:opacity-50 max-lg:w-full"
               >
                 CHECK
