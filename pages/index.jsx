@@ -36,7 +36,7 @@ const Checkup = () => {
     } else {
       setIsValidated(false);
     }
-  }, [severity, duration, frequency, prompt]);
+  }, [severity, prompt]);
 
   async function fetchResponse(msg) {
     const openai = new OpenAI({
