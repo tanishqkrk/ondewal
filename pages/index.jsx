@@ -109,14 +109,16 @@ const Checkup = () => {
     };
 
     try {
-      const data = await fetch("/api/getRemedies", remedies_options);
-      console.log(data);
-      // const para = await fetchResponse(messageToSend2);
-      // await setSum(para);
-      // await setLoading(false);
-      // const data = await fetchResponse(messageToSend1);
-      // await setResponse(data);
-      // console.log(data);
+      const para = await (
+        await fetch("/api/getRemedies", causes_options)
+      ).json();
+      setSum(para?.response);
+
+      await setLoading(false);
+      const data = await (
+        await fetch("/api/getRemedies", remedies_options)
+      ).json();
+      await setResponse(data?.response);
     } catch (err) {
       console.log(err);
     }
@@ -288,7 +290,7 @@ const Checkup = () => {
           <div>
             {sum && (
               <ul className="flex flex-col gap-6 ">
-                {sum.content
+                {sum
                   .split("~")
                   .filter((i) => i !== "")
                   .map((p) => (
@@ -299,7 +301,7 @@ const Checkup = () => {
           </div>
           <ul className="flex flex-col gap-6">
             {response ? (
-              response?.content
+              response
                 .split("~")
                 .filter((i) => i !== "")
                 .map((p) => (

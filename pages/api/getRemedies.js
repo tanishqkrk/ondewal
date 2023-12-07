@@ -1,11 +1,11 @@
 import { OpenAI } from "openai";
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   console.log(req.body.message);
-  let responseToSend;
+  // let responseToSend = "default";
   async function fetchResponse(msg) {
     const openai = new OpenAI({
-      apiKey: "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",
+      apiKey: "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",
       // dangerouslyAllowBrowser: true,
     });
     const chatCompletion = await openai.chat.completions.create({
@@ -15,9 +15,10 @@ export default function handler(req, res) {
     });
     return chatCompletion.choices[0].message;
   }
-  fetchResponse().then((r) => {
-    responseToSend = r;
-    res.status(200).json({ content: r });
+
+  let responseToSend = await fetchResponse();
+
+  res.status(200).json({
+    response: responseToSend.content,
   });
-  res.status(200).json({ response: responseToSend });
 }
