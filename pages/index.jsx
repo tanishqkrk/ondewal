@@ -8,7 +8,7 @@ import Link from "next/link";
 // import { useNavigate } from 'react-router-dom';
 const Checkup = () => {
   const [isValidated, setIsValidated] = useState(false);
-  const [severity, setSeverity] = useState("");
+  const [severity, setSeverity] = useState("low");
   const [duration, setDuration] = useState("A few hours");
   const [frequency, setFrequency] = useState("All the time");
   const [prompt, setPrompt] = useState("");
@@ -30,13 +30,13 @@ const Checkup = () => {
   // };
   const { response, setResponse, loading, setLoading } = useCore();
   //   const router = useRouter();
-  useEffect(() => {
-    if (severity !== "" && prompt !== "") {
-      setIsValidated(true);
-    } else {
-      setIsValidated(false);
-    }
-  }, [severity, prompt]);
+  // useEffect(() => {
+  //   if (severity !== "" && prompt !== "") {
+  //     setIsValidated(true);
+  //   } else {
+  //     setIsValidated(false);
+  //   }
+  // }, [severity, prompt]);
 
   async function fetchResponse(msg) {
     const openai = new OpenAI({
@@ -61,7 +61,7 @@ const Checkup = () => {
       sev: severity,
       duration: duration,
     };
-
+    console.table(checkupData);
     const messageToSend1 = `${checkupData.message} for the past ${
       checkupData.duration
     } and the problem is ${
@@ -145,12 +145,16 @@ const Checkup = () => {
                 <div className="flex  justify-center items-end ">
                   <label>
                     <input
-                      onChange={() => setSeverity("low")}
+                      onChange={() => {
+                        setSeverity("low");
+                        setIsValidated(true);
+                      }}
                       className="hidden peer"
                       type="radio"
                       id="low"
                       name="pain"
                       value="low"
+                      checked={severity === "low" ? true : false}
                     />
                     <div
                       role={"button"}
@@ -161,12 +165,16 @@ const Checkup = () => {
                   </label>
                   <label>
                     <input
-                      onChange={() => setSeverity("medium")}
+                      onChange={() => {
+                        setSeverity("medium");
+                        setIsValidated(true);
+                      }}
                       className="hidden peer"
                       type="radio"
                       id="medium"
                       name="pain"
                       value="medium"
+                      checked={severity === "medium" ? true : false}
                     />
                     <div
                       role={"button"}
@@ -177,12 +185,16 @@ const Checkup = () => {
                   </label>
                   <label>
                     <input
-                      onChange={() => setSeverity("high")}
+                      onChange={() => {
+                        setSeverity("high");
+                        setIsValidated(true);
+                      }}
                       className="hidden peer"
                       type="radio"
                       id="high"
                       name="pain"
                       value="high"
+                      checked={severity === "high" ? true : false}
                     />
                     <div
                       role={"button"}
@@ -235,7 +247,10 @@ const Checkup = () => {
             </div> */}
               <div>
                 <textarea
-                  onChange={(e) => setPrompt(e.target.value)}
+                  onChange={(e) => {
+                    setPrompt(e.target.value);
+                    setIsValidated(true);
+                  }}
                   value={prompt}
                   placeholder="Describe in your own words, be as precise and descriptive as possible!"
                   name="prompt"
