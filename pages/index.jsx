@@ -261,7 +261,7 @@ const Checkup = () => {
                 ></textarea>
               </div>
               <button
-                disabled={!isValidated}
+                // disabled={!isValidated}
                 className="p-3 bg-primary text-white rounded-lg w-full disabled:opacity-50 max-lg:w-full"
               >
                 CHECK
