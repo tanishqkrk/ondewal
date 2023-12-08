@@ -3,7 +3,7 @@ import { OpenAI } from "openai";
 export default async function handler(req, res) {
   async function fetchResponse(msg) {
     const openai = new OpenAI({
-      apiKey: "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",
+      apiKey: "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",
       // dangerouslyAllowBrowser: true,
     });
     const chatCompletion = await openai.chat.completions.create({

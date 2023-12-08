@@ -88,7 +88,7 @@ const Checkup = () => {
     const remedies_options = {
       method: "POST",
       headers: {
-        Origin: "http://localhost:3000",
+        Origin: "*",
         "Content-Type": "application/json",
       },
       credentials: "include",
@@ -99,7 +99,7 @@ const Checkup = () => {
     const causes_options = {
       method: "POST",
       headers: {
-        Origin: "http://localhost:3000",
+        Origin: "*",
         "Content-Type": "application/json",
       },
       credentials: "include",
